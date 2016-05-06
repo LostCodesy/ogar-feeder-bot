@@ -217,7 +217,7 @@ setTimeout(function() {
             last_transmited_game_server = window.agar.ws;
             socket.emit("cmd", {
             "name": "reconnect_server",
-            "ip": last_transmited_game_server
+            "ip": window.location.href.replace("http://agar.io/", "").replace("#", "")
         })
         }
     }
@@ -226,7 +226,7 @@ setTimeout(function() {
         last_transmited_game_server = window.agar.ws;
         socket.emit("cmd", {
             "name": "connect_server",
-            "ip": last_transmited_game_server
+            "ip": window.location.href.replace("http://agar.io/", "").replace("#", "")
         })
     }
     var mouseX = 0;
