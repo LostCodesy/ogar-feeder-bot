@@ -557,12 +557,15 @@ socket.on('cmd', function(data) {
             bots[bot].client.disconnect();
         }
         bots = {};
-        game_server_ip = data.ip;
-        console.log("client requested bots on: " + game_server_ip);
+		AgarioClient.servers.getPartyServer({party_key: data.ip}, function(srv){
+			if(!srv.server) return console.log('Failed to request server (error=' + srv.error + ', error_source=' + srv.error_source + ')');
+			game_server_ip = srv.server;
+			game_server_key = srv.key;
+            setTimeout(function() {
+                startFeederBotOnProxies();
+            }, 1000);
+		})
 
-        setTimeout(function() {
-            startFeederBotOnProxies();
-        }, 1000);
     }
 });
 
@@ -597,7 +600,7 @@ var fs = require('fs');
 var lines = fs.readFileSync(config.proxies).toString().split("\n");
 var url = require('url');
 var game_server_ip = null;
-
+var game_server_key = null;
 function createAgent(ip,type) {
 
     data = ip.split(":");
